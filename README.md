@@ -68,7 +68,7 @@ and in result will lead you to either inputting values for task 1, 2, or 3.
 
 However if on main menu screen you type 2, then it will produce scatter plots and csvs for all 3 tasks. 
 
-We run this program on optimization since when inputting a large amount of numbers it speeds up the process quite a bit. 
+We run this program on optimization 2 since when inputting a large amount of numbers it speeds up the process quite a bit. 
 
 
 
