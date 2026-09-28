@@ -4,9 +4,13 @@
 
 int decrease_by_one(int base, int exponent, int &multiplications)
 {
+    if (exponent == 0)
+    {
+        return 1;
+    }
     if (exponent == 1)
     {
-        return 0;
+        return base;
     }
     multiplications++;
     return base * decrease_by_one(base, exponent - 1, multiplications);
@@ -14,18 +18,23 @@ int decrease_by_one(int base, int exponent, int &multiplications)
 
 int decrease_by_constant_factor(int base, int exponent, int &multiplications)
 {
-    if (exponent <= 1)
+    if (exponent == 0)
     {
-        return 0;
+        return 1;
+    }
+    if (exponent == 1)
+    {
+        return base;
     }
     multiplications++;
-    if (exponent % 2)
+    if (exponent % 2 == 0)
     { // even
         int output = decrease_by_constant_factor(base, exponent / 2, multiplications);
         return output * output;
     }
     else
     { // odd
+        multiplications++;
         int output = decrease_by_constant_factor(base, (exponent - 1) / 2, multiplications);
         return base * output * output;
     }
@@ -33,12 +42,16 @@ int decrease_by_constant_factor(int base, int exponent, int &multiplications)
 
 int divide_and_conquer(int base, int exponent, int &multiplications)
 {
-    if (exponent <= 1)
+    if (exponent == 0)
     {
-        return 0;
+        return 1;
+    }
+    if (exponent == 1)
+    {
+        return base;
     }
     multiplications++;
-    if (exponent % 2)
+    if (exponent % 2 == 0)
     { // even
         int output = divide_and_conquer(base, exponent / 2, multiplications);
         int output2 = divide_and_conquer(base, exponent / 2, multiplications);
@@ -46,6 +59,7 @@ int divide_and_conquer(int base, int exponent, int &multiplications)
     }
     else
     { // odd
+        multiplications++;
         int output = divide_and_conquer(base, (exponent - 1) / 2, multiplications);
         int output2 = divide_and_conquer(base, (exponent - 1) / 2, multiplications);
         return base * output * output2;
