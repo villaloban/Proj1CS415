@@ -1,6 +1,7 @@
 #include "task2.h"
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 
 int decrease_by_one(int base, int exponent, int &multiplications)
 {
@@ -92,7 +93,8 @@ void task2UserMode()
 void task2PlotMode()
 {
     // Implementation for Plot Mode
-    std::ofstream outputfile("task2_data.csv");
+    std::filesystem::create_directories("results/task2_results");
+    std::ofstream outputfile("results/task2_results/task2_data.csv");
     outputfile << "n,M_one,M_constant_factor,M_divide_and_conquer" << std::endl;
     int a = 1;
     for (int i = 1; i <= 1000; i++)

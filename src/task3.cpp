@@ -3,13 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
-void swap(int &a, int &b)
-{
-    a = a ^ b;
-    b = a ^ b;
-    a = a ^ b;
-}
+#include <utility>
+#include <filesystem>
 
 void selection_sort(int arr[], int size, int &operations)
 {
@@ -24,7 +19,7 @@ void selection_sort(int arr[], int size, int &operations)
                 min_idx = j;
             }
         }
-        swap(arr[i], arr[min_idx]);
+        std::swap(arr[i], arr[min_idx]);
     }
 }
 
@@ -34,11 +29,18 @@ void insertion_sort(int arr[], int size, int &operations)
     {
         int key = arr[i];
         int j = i - 1;
-        while (j >= 0 && arr[j] > key)
+        while (j >= 0)
         {
             operations++; // main operation is comparison above, the arr[j] > key
-            arr[j + 1] = arr[j];
-            j = j - 1;
+            if (arr[j] > key)
+            {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            else
+            {
+                break;
+            }
         }
         arr[j + 1] = key;
     }
@@ -77,17 +79,28 @@ void task3UserMode()
     int c1 = 0;
     selection_sort(copy1.data(), copy1.size(), c1);
     std::cout << "Selection Sort Comparisons: " << c1 << std::endl;
+    for (size_t i = 0; i < copy1.size(); i++)
+    {
+        std::cout << copy1[i] << " ";
+    }
+    std::cout << std::endl;
 
     std::vector<int> copy2 = data;
     int c2 = 0;
     insertion_sort(copy2.data(), copy2.size(), c2);
     std::cout << "Insertion Sort Comparisons: " << c2 << std::endl;
+    for (size_t i = 0; i < copy2.size(); i++)
+    {
+        std::cout << copy2[i] << " ";
+    }
+    std::cout << std::endl;
 }
 
 void task3PlotMode()
 {
     // Implementation for Plot Mode
-    std::ofstream outputFile("task3_best.csv");
+    std::filesystem::create_directories("results/task3_results");
+    std::ofstream outputFile("results/task3_results/task3_best.csv");
     outputFile << "n,Selection Sort,Insertion Sort\n";
     for (int n = 100; n <= 10000; n += 100)
     {
@@ -106,7 +119,8 @@ void task3PlotMode()
     }
     outputFile.close();
 
-    outputFile.open("task3_average.csv");
+    std::filesystem::create_directories("results/task3_results");
+    outputFile.open("results/task3_results/task3_average.csv");
     outputFile << "n,Selection Sort,Insertion Sort\n";
     for (int n = 100; n <= 10000; n += 100)
     {
@@ -125,7 +139,8 @@ void task3PlotMode()
     }
     outputFile.close();
 
-    outputFile.open("task3_worst.csv");
+    std::filesystem::create_directories("results/task3_results");
+    outputFile.open("results/task3_results/task3_worst.csv");
     outputFile << "n,Selection Sort,Insertion Sort\n";
     for (int n = 100; n <= 10000; n += 100)
     {

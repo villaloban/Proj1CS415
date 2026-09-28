@@ -1,6 +1,8 @@
 #include "task1.h"
 #include <fstream>
 #include <iostream>
+#include <filesystem>
+
 int fib(int k, int &counter)
 {
     if (k <= 1)
@@ -42,17 +44,18 @@ void task1UserMode()
 void task1PlotMode()
 {
     // Implementation for plot mode
-    std::ofstream outputFile("task1_Fibonacci_results.csv");
+    std::filesystem::create_directories("results/task1_results");
+    std::ofstream outputFile("results/task1_results/task1_Fibonacci_results.csv");
+
     outputFile << "k,A\n";
     for (int k = 1; k <= 35; k++)
     {
         int counter = 0;
-        int result = fib(k, counter);
         outputFile << k << "," << counter << "\n";
     }
     outputFile.close();
 
-    outputFile.open("task1_GCD_results.csv");
+    outputFile.open("results/task1_results/task1_GCD_results.csv");
     outputFile << "n,D\n";
     for (int k = 1; k <= 35; k++)
     {

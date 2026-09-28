@@ -2,6 +2,7 @@
 #include "task2.h"
 #include "task3.h"
 #include <iostream>
+#include <cstdlib>
 
 int main()
 {
@@ -35,7 +36,8 @@ int main()
         task1PlotMode();
         task2PlotMode();
         task3PlotMode();
-        std::cout << "CSV files successfully written." << '\n';
+        // std::cout << "CSV files successfully written." << '\n';
+        std::system("python3 plot.py results");
     }
     return 0;
 }
