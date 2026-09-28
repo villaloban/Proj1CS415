@@ -41,6 +41,7 @@ PLOT_SETTINGS = {
 }
 
 MARKERS = ["o", "s", "^", "D", "v"]
+MAX_POINTS = 60  # max markers drawn per series (keeps dense data readable)
 
 
 def read_csv(path):
@@ -61,12 +62,21 @@ def plot_file(path):
         name, (name[:-4], x_name, "count", "linear", "linear"))
 
     fig, ax = plt.subplots(figsize=(8, 5))
+    n_series = len(series)
     for i, (label, y) in enumerate(series.items()):
         # log scales can't show 0, so drop those points on log axes
         pts = [(a, b) for a, b in zip(x, y)
                if (xscale != "log" or a > 0) and (yscale != "log" or b > 0)]
+        # with lots of points, show ~MAX_POINTS per series, and start each
+        # series at a different offset so overlapping series interleave
+        step = max(1, len(pts) // MAX_POINTS)
+        pts = pts[(i * step) // n_series::step]
+        # hollow markers, earlier series drawn bigger, so overlaps stay visible
+        color = f"C{i}"
         ax.scatter([p[0] for p in pts], [p[1] for p in pts],
-                   s=18, marker=MARKERS[i % len(MARKERS)], label=label)
+                   s=60 - 15 * i, marker=MARKERS[i % len(MARKERS)],
+                   facecolors="none", edgecolors=color, linewidths=1.3,
+                   label=label)
 
     ax.set_title(title)
     ax.set_xlabel(xlabel)
